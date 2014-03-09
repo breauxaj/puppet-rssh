@@ -19,6 +19,9 @@ The allow mask (rsync, rdist, cvs, sftp, scp)
 rssh:config { 'default':
   allow => ['allowscp'],
   umask => '022',
-  users => ['sample:002:00001:/home/sample'],
+  users => [
+    'sample:002:00001:/home/sample',
+    'another:022:00011:/home/another
+  ],
 }
 ```
