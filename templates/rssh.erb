@@ -3,52 +3,30 @@
 # set the log facility.  "LOG_USER" and "user" are equivalent.
 logfacility = LOG_USER 
 
-# Leave these all commented out to make the default action for rssh to lock
-# users out completely...
+# Explicitly allow via (allowscp,allowsftp,allowcvs,allowrdist,allowrsync)
+<% if allow and allow.kind_of?(Array) and ! allow.empty? -%>
+<% allow.each do |ale| -%>
+<%= ale %>
+<% end -%>
+<% end -%>
 
-#allowscp
-#allowsftp
-#allowcvs
-#allowrdist
-#allowrsync
-
-# set the default umask
+# Set the default umask
 <% if umask and ! umask.empty? -%>
 umask = <%= umask %>
 <% else -%>
 umask = 022
 <% end -%>
 
-# If you want to chroot users, use this to set the directory where the root of
-# the chroot jail will be located.
-#
-# if you DO NOT want to chroot users, LEAVE THIS COMMENTED OUT.
+# Set chrootpath for all users must be specified again for users
 <% if chrootpath and ! chrootpath.empty? -%>
 chrootpath = "<%= chrootpath %>"
 <% else -%>
 # chrootpath = /usr/local/chroot
 <% end -%>
 
-##########################################
-# EXAMPLES of configuring per-user options
-
-#user=rudy:077:00010:  # the path can simply be left out to not chroot
-#user=rudy:077:00010   # the ending colon is optional
-
-#user=rudy:011:00100:  # cvs, with no chroot 
-#user=rudy:011:01000:  # rdist, with no chroot
-#user=rudy:011:10000:  # rsync, with no chroot
-#user="rudy:011:00001:/usr/local/chroot"  # whole user string can be quoted
-#user=rudy:01"1:00001:/usr/local/chroot"  # or somewhere in the middle, freak!
-#user=rudy:'011:00001:/usr/local/chroot'  # single quotes too
-
-# if your chroot_path contains spaces, it must be quoted...
-# In the following examples, the chroot_path is "/usr/local/my chroot"
-#user=rudy:011:00001:"/usr/local/my chroot"  # scp with chroot
-#user=rudy:011:00010:"/usr/local/my chroot"  # sftp with chroot
-#user=rudy:011:00011:"/usr/local/my chroot"  # both with chroot
-
-# Spaces before or after the '=' are fine, but spaces in chrootpath need
-# quotes.
-#user = "rudy:011:00001:/usr/local/my chroot"  
-#user = "rudy:011:00001:/usr/local/my chroot"  # neither do comments at line end
+# Users, the pattern is username:umask:allow(as a bitmask):chrootpath
+<% if users and users.kind_of?(Array) and ! users.empty? -%>
+<% users.each do |usr| -%>
+user = "<%= usr %>"
+<% end -%>
+<% end -%>
