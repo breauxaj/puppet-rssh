@@ -1,4 +1,4 @@
-# This is the default rssh config file
+# MANAGED BY PUPPET!
 
 # set the log facility.  "LOG_USER" and "user" are equivalent.
 logfacility = LOG_USER 
@@ -13,17 +13,21 @@ logfacility = LOG_USER
 #allowrsync
 
 # set the default umask
+<% if umask and ! umask.empty? -%>
+umask = <%= umask %>
+<% else -%>
 umask = 022
+<% end -%>
 
 # If you want to chroot users, use this to set the directory where the root of
 # the chroot jail will be located.
 #
 # if you DO NOT want to chroot users, LEAVE THIS COMMENTED OUT.
+<% if chrootpath and ! chrootpath.empty? -%>
+chrootpath = "<%= chrootpath %>"
+<% else -%>
 # chrootpath = /usr/local/chroot
-
-# You can quote anywhere, but quotes not required unless the path contains a
-# space... as in this example.
-#chrootpath = "/usr/local/my chroot"
+<% end -%>
 
 ##########################################
 # EXAMPLES of configuring per-user options
